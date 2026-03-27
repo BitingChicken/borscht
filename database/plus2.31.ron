@@ -1,0 +1,142 @@
+#![enable(implicit_some)]
+
+AnalysisConfig(
+  meta: (
+    variant_name: "Elona+",
+    version: "2.31",
+    ax_sha256: "bbbb7604f22308c3cf803c4dfd75a276dbe3a9741c09da00cecd02f292b744c8"
+  ),
+
+  includes: [
+    "database/plus2.30.ron"
+  ],
+  
+  variable_groups: {
+
+    "chara_id": (
+      variables: [
+        ( name: "CREATURE_ID_KAKOI_ANAGUMA", value: 1137 ),
+        ( name: "CREATURE_ID_MASKED_MUSANGOD", value: 1138 ),
+        ( name: "CREATURE_ID_DEVIANT_MINECART", value: 1139 ),
+        ( name: "CREATURE_ID_PROPA_GANDAR_THE_MOBILE_ADVERTISER", value: 1140 ),
+        ( name: "CREATURE_ID_QUEEN_SEDONA_THE_SAIL_GIRL", value: 1141 ),
+        ( name: "CREATURE_ID_BIG_MOSQUITO", value: 1142 ),
+        ( name: "CREATURE_ID_MOMALARIA_THE_BLOODSUCKER", value: 1143 ),
+
+        ( name: "MAX_CREATURE_ID", value: 1146, code_value: "CREATURE_ID_MOMALARIA_THE_BLOODSUCKER + 3" ),
+      ]
+    ),
+
+    "item_id": (
+      variables: [
+        ( name: "ITEM_ID_MESUGAKI", value: 1315 ),
+        ( name: "ITEM_ID_WARIBASI", value: 1316 ),
+        ( name: "ITEM_ID_TZ_30", value: 1317 ),
+        ( name: "ITEM_ID_TZ30_C", value: 1318 ),
+        ( name: "ITEM_ID_TZC_500", value: 1319 ),
+        ( name: "ITEM_ID_TZ500_K", value: 1320 ),
+        ( name: "MAX_ITEM_ID", value: 1323, code_value: "ITEM_ID_TZ500_K + 3", exclude: true ),
+      ],
+    ),
+
+    "item_effect": (
+      variables: [
+        ( name: "EFFECT_WARIBASI", value: 153 ),
+        ( name: "EFFECT_TRANQ_RIFLE", value: 154 ),
+      ]
+    ),
+    
+    "skill_spact": (
+      variables: [
+        ( name: "SKILL_SPACT_GENUINE_CHEERING", value: 875, override: true ),
+        ( name: "SKILL_SPACT_DYNAMIC_YELL", value: 876, override: true ),
+        ( name: "MAX_SKILL", value: 877, code_value: "SKILL_SPACT_DYNAMIC_YELL + 1" ),
+      ]
+    ),
+
+    "cdata": (
+      variables: [
+        ( name: "CDATA_INCAPACITATED", value: 181, override: true ),
+      ]
+    ),
+
+    "cell_feature": (
+      variables: [
+        ( name: "CELL_FEATURE_WARIBASI", value: 35 ),
+      ],
+    ),
+    
+    "animation_id": (
+      variables: [
+        ( name: "ANIMATION_OVERDOSE", value: 72 ),
+      ]
+    ),
+
+    "action_1": (
+      variables: [
+        ( name: "ACTION_CHEER", value: 33, ),
+      ]
+    ),
+
+    "filter_race": (
+      variables: [
+        ( name: "FILTER_RACE_KAKOI_ANAGUMA", value: 54 ),
+      ]
+    ),
+  },
+    
+  functions: {
+  },
+
+  labels: {
+
+    "*item_chopstickPick": (
+      rules: [
+        (
+          kind: StringLiteral,
+          match: "を収穫した。"
+        )
+      ]
+    ),
+
+    "*item_seedPick": (
+      rules: [
+        (
+          kind: Assignment,
+          match: "dbid = 476",
+          override: true,
+        )
+      ]
+    ),
+
+    "*skill_act_cheer": (
+      rules: [
+        (
+          kind: Assignment,
+          match: "cdata(CDATA_ROW_ACT, cc) = ACTION_CHEER"
+        )
+      ]
+    ),
+
+    "*db_creature_BIG_MOSQUITO": ( after: "*db_creature", loop_kind: SwitchEnd ),
+    "*db_creature_QUEEN_SEDONA_THE_SAIL_GIRL": ( after: "*db_creature_BIG_MOSQUITO", loop_kind: SwitchEnd ),
+    "*db_creature_PROPA_GANDAR_THE_MOBILE_ADVERTISER": ( after: "*db_creature_QUEEN_SEDONA_THE_SAIL_GIRL", loop_kind: SwitchEnd ),
+    "*db_creature_DEVIANT_MINECART": ( after: "*db_creature_PROPA_GANDAR_THE_MOBILE_ADVERTISER", loop_kind: SwitchEnd ),
+    "*db_creature_MASKED_MUSANGOD": ( after: "*db_creature_DEVIANT_MINECART", loop_kind: SwitchEnd ),
+    "*db_creature_KAKOI_ANAGUMA": ( after: "*db_creature_MASKED_MUSANGOD", loop_kind: SwitchEnd ),
+    "*db_creature_MADEER": ( after: "*db_creature_KAKOI_ANAGUMA", loop_kind: SwitchEnd ),
+    // This override previous labels
+    "*db_creature_MATICK": ( after: "*db_creature_MADEER", loop_kind: SwitchEnd ),
+
+
+    "*db_item_TZC_500": ( after: "*db_item", loop_kind: SwitchEnd ),
+    "*db_item_TZ30_C": ( after: "*db_item_TZC_500", loop_kind: SwitchEnd ),
+    "*db_item_TZ_30": ( after: "*db_item_TZ30_C", loop_kind: SwitchEnd ),
+    "*db_item_WARIBASI": ( after: "*db_item_TZ_30", loop_kind: SwitchEnd ),
+    "*db_item_MESUGAKI": ( after: "*db_item_WARIBASI", loop_kind: SwitchEnd ),
+    "*db_item_TURAHAGI": ( after: "*db_item_MESUGAKI", loop_kind: SwitchEnd ),
+    // This override previous labels
+    "*db_item_BLANK_CARD": ( after: "*db_item_TURAHAGI", loop_kind: SwitchEnd ),
+
+  },
+)
