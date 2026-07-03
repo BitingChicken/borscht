@@ -1,0 +1,128 @@
+#![enable(implicit_some)]
+
+AnalysisConfig(
+  meta: (
+    variant_name: "Elona+",
+    version: "2.32",
+    ax_sha256: "bba8c45f7a576a1e7a076bf3d61f9e0e376fc81eb1ab990b0558911db8edfbab"
+  ),
+
+  includes: [
+    "database/plus2.31.ron"
+  ],
+  
+  variable_groups: {
+
+    "chara_id": (
+      variables: [
+        ( name: "CREATURE_ID_KETSU_GLIMMER", value: 1144 ),
+        ( name: "CREATURE_ID_ZIZINGA_THE_OLD_SILVER_WOLF", value: 1145 ),
+        ( name: "CREATURE_ID_SHEESHERPENT_THE_SMOKE_SNAKE", value: 1146 ),
+        ( name: "CREATURE_ID_MARIMOLL_THE_MARIMO_GUARDIAN", value: 1147 ),
+        ( name: "CREATURE_ID_TOWN_CHILD2", value: 1148 ),
+        ( name: "CREATURE_ID_TOWN_CHILD3", value: 1149 ),
+        ( name: "CREATURE_ID_TOWN_CHILD4", value: 1150 ),
+
+        ( name: "MAX_CREATURE_ID", value: 1153, code_value: "CREATURE_ID_TOWN_CHILD4 + 3" ),
+      ]
+    ),
+    
+    "skill_spact": (
+      variables: [
+        ( name: "SKILL_SPACT_STANCE_SELECT", value: 877, override: true ),
+        ( name: "SKILL_SPACT_DESTRUDO_HYPNOTISM", value: 878, override: true ),
+        ( name: "MAX_SKILL", value: 879, code_value: "SKILL_SPACT_DESTRUDO_HYPNOTISM + 1" ),
+      ]
+    ),
+
+    "role": (
+      variables: [
+        ( name: "ROLE_PART_TIME_WORKER", value: 26 ),
+      ]
+    ),
+    
+    "recipe_blend": (
+      variables: [
+        ( name: "RECIPE_BLEND_ACTION_FURNITURE_SYNTHESIS", value: 10025 ),
+      ]
+    ),
+
+    "rf_id": (
+      variables: [
+        ( name: "RF_REINFORCE_FURNITURE", value: 9031, code_value: "EXT_RF + 31", override: true ),
+        ( name: "RF_MATERIAL_FURNITURE", value: 9032, code_value: "EXT_RF + 32", override: true ),
+
+        ( name: "MAX_RF", value: 9033, code_value: "RF_MATERIAL_FURNITURE + 1", override: true ),
+      ]
+    ),
+    
+  },
+    
+  functions: {
+    "calcmagicrit": (
+      args: {
+        0: (name: "arg1", type: Int),
+      }
+    ),
+
+    "txtsetstance": (
+      args: {
+        0: (name: "count", type: Int)
+      }
+    ),
+
+  },
+
+  labels: {
+
+    "*com_spellbook": (
+      after: "*com_book_loop_pgchg"
+    ),
+    "*com_spellbook_2": (
+      after: "*com_spellbook"
+    ),
+    "*com_spellbook_loop_pgchk": (
+      after: "*com_spellbook_2"
+    ),
+    "*com_spellbook_loop": (
+      after: "*com_spellbook_loop_pgchk"
+    ),
+
+    "*com_spellremove": (
+      after: "*com_spellbook_loop"
+    ),
+    "*com_spellremove_2": (
+      after: "*com_spellremove"
+    ),
+    "*com_spellremove_loop_pgchk": (
+      after: "*com_spellremove_2"
+    ),
+    "*com_spellremove_loop": (
+      after: "*com_spellremove_loop_pgchk"
+    ),
+
+    "*com_spellcast": (
+      after: "*com_spellremove_loop"
+    ),
+    "*com_spellcast_2": (
+      after: "*com_spellcast"
+    ),
+
+    "*com_spell": (
+      after: "*com_spellcast_2"
+    ),
+
+    // creature_TOWN_CHILD4": ( after: "*db_creature", loop_kind: SwitchEnd ),
+    // creature_TOWN_CHILD3": ( after: "*creature_TOWN_CHILD4", loop_kind: SwitchEnd ),
+    "*db_creature_TOWN_CHILD3": ( after: "*db_creature", loop_kind: SwitchEnd ),
+    "*db_creature_TOWN_CHILD2": ( after: "*db_creature_TOWN_CHILD3", loop_kind: SwitchEnd ),
+    "*db_creature_MARIMOLL_THE_MARIMO_GUARDIAN": ( after: "*db_creature_TOWN_CHILD2", loop_kind: SwitchEnd ),
+    "*db_creature_SHEESHERPENT_THE_SMOKE_SNAKE": ( after: "*db_creature_MARIMOLL_THE_MARIMO_GUARDIAN", loop_kind: SwitchEnd ),
+    "*db_creature_ZIZINGA_THE_OLD_SILVER_WOLF": ( after: "*db_creature_SHEESHERPENT_THE_SMOKE_SNAKE", loop_kind: SwitchEnd ),
+    "*db_creature_KETSU_GLIMMER": ( after: "*db_creature_ZIZINGA_THE_OLD_SILVER_WOLF", loop_kind: SwitchEnd ),
+    "*db_creature_MOMALARIA_THE_BLOODSUCKER": ( after: "*db_creature_KETSU_GLIMMER", loop_kind: SwitchEnd ),
+    // This override previous labels
+    "*db_creature_BIG_MOSQUITO": ( after: "*db_creature_MOMALARIA_THE_BLOODSUCKER", loop_kind: SwitchEnd ),
+
+  },
+)

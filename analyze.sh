@@ -58,8 +58,10 @@ set -e
 # cargo run --release -- analyze -s -o ../elonaplus_sources/2.29-borscht ../elonaplus2.29/start.ax
 # cargo run --release -- unpack ../elonaplus2.30/elonaplus.exe
 # cargo run --release -- analyze -s -o ../elonaplus_sources/2.30-borscht ../elonaplus2.30/start.ax
-cargo run --release -- unpack ../elonaplus2.31/elonaplus.exe
-cargo run --release -- analyze -s -o ../elonaplus_sources/2.31-borscht ../elonaplus2.31/start.ax
+# cargo run --release -- unpack ../elonaplus2.31/elonaplus.exe
+# cargo run --release -- analyze -s -o ../elonaplus_sources/2.31-borscht ../elonaplus2.31/start.ax
+cargo run --release -- unpack ../elonaplus2.32/elonaplus.exe
+cargo run --release -- analyze -s -o ../elonaplus_sources/2.32-borscht ../elonaplus2.32/start.ax
 
 # cargo run --release -- print-vars database/plus1.90.ron > ../elonaplus_sources/defines/1.90.hsp
 # cargo run --release -- print-vars database/plus2.05.ron > ../elonaplus_sources/defines/2.05.hsp
@@ -92,12 +94,12 @@ cargo run --release -- analyze -s -o ../elonaplus_sources/2.31-borscht ../elonap
 # cargo run --release -- print-vars database/plus2.28.ron > ../elonaplus_sources/defines/2.28.hsp
 # cargo run --release -- print-vars database/plus2.29.ron > ../elonaplus_sources/defines/2.29.hsp
 # cargo run --release -- print-vars database/plus2.30.ron > ../elonaplus_sources/defines/2.30.hsp
-cargo run --release -- print-vars database/plus2.31.ron > ../elonaplus_sources/defines/2.31.hsp
-
+# cargo run --release -- print-vars database/plus2.31.ron > ../elonaplus_sources/defines/2.31.hsp
+cargo run --release -- print-vars database/plus2.32.ron > ../elonaplus_sources/defines/2.32.hsp
 
 unix2dos ../elonaplus_sources/defines/*.hsp
 cd ../elonaplus_sources/defines/
-diff -U5 --recursive '-I\*label_' ./2.30.hsp ./2.31.hsp | unix2dos > a.diff
+diff -U5 --recursive '-I\*label_' ./2.31.hsp ./2.32.hsp | unix2dos > a.diff
 
 cd ../
 # unix2dos ../elonaplus_sources/1.90-borscht/*.hsp
@@ -131,7 +133,8 @@ cd ../
 # unix2dos ../elonaplus_sources/2.28-borscht/*.hsp
 # unix2dos ../elonaplus_sources/2.29-borscht/*.hsp
 # unix2dos ../elonaplus_sources/2.30-borscht/*.hsp
-unix2dos ../elonaplus_sources/2.31-borscht/*.hsp
+# unix2dos ../elonaplus_sources/2.31-borscht/*.hsp
+unix2dos ../elonaplus_sources/2.32-borscht/*.hsp
 
 
 cd ./diff/
@@ -213,10 +216,12 @@ pushd ../elonaplus_sources/diff
 # diff -U5 --recursive -x 'db_creature*' -x 'db_item*' '-I\*label_' ../2.29-borscht/ ../2.30-borscht/ | unix2dos > 2.29-to-2.30.diff
 # diff -U5 --recursive '-I\*label_' '-b' ../2.29-borscht/db_item.hsp ../2.30-borscht/db_item.hsp | unix2dos > 2.29-to-2.30.db_item.diff
 # diff -U5 --recursive '-I\*label_' '-Ifilter_creature'  ../2.29-borscht/db_creature.hsp ../2.30-borscht/db_creature.hsp | unix2dos > 2.29-to-2.30.db_creature.diff
-
-diff -U5 --recursive -x 'db_creature*' -x 'db_item*' '-I\*label_' ../2.30-borscht/ ../2.31-borscht/ | unix2dos > 2.30-to-2.31.diff
-diff -U5 --recursive '-I\*label_' '-b' ../2.30-borscht/db_item.hsp ../2.31-borscht/db_item.hsp | unix2dos > 2.30-to-2.31.db_item.diff
-diff -U5 --recursive '-I\*label_' '-Ifilter_creature'  ../2.30-borscht/db_creature.hsp ../2.31-borscht/db_creature.hsp | unix2dos > 2.30-to-2.31.db_creature.diff
+# diff -U5 --recursive -x 'db_creature*' -x 'db_item*' '-I\*label_' ../2.30-borscht/ ../2.31-borscht/ | unix2dos > 2.30-to-2.31.diff
+# diff -U5 --recursive '-I\*label_' '-b' ../2.30-borscht/db_item.hsp ../2.31-borscht/db_item.hsp | unix2dos > 2.30-to-2.31.db_item.diff
+# diff -U5 --recursive '-I\*label_' '-Ifilter_creature'  ../2.30-borscht/db_creature.hsp ../2.31-borscht/db_creature.hsp | unix2dos > 2.30-to-2.31.db_creature.diff
+diff -U5 --recursive -x 'db_creature*' -x 'db_item*' '-I\*label_' ../2.31-borscht/ ../2.32-borscht/ | unix2dos > 2.31-to-2.32.diff
+diff -U5 --recursive '-I\*label_' '-b' ../2.31-borscht/db_item.hsp ../2.32-borscht/db_item.hsp | unix2dos > 2.31-to-2.32.db_item.diff
+diff -U5 --recursive '-I\*label_' '-Ifilter_creature'  ../2.31-borscht/db_creature.hsp ../2.32-borscht/db_creature.hsp | unix2dos > 2.31-to-2.32.db_creature.diff
 
 
 
