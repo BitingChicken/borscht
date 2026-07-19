@@ -1,5 +1,4 @@
 #![feature(entry_insert)]
-#![feature(let_chains)]
 
 extern crate serde;
 extern crate serde_derive;
@@ -622,7 +621,8 @@ fn expression_has_variant(exp: &ast::AstNode, group: &VariableGroup, variants: &
             if find(&var) {
                 return true;
             }
-        }
+        }
+
     }
 
     if !any {
@@ -1097,71 +1097,74 @@ impl<'a> ConstantSubstitutionVisitor<'a> {
         match self.config.variable_groups.get(&mac.group) {
             Some(group) => {
                 if let Some(ref mut arg) = &mut node.arg {
-                    if let ast::AstNodeKind::Argument(ref mut arg) = arg.kind && arg.exps.len() > mac.index {
-                        let exp = &arg.exps[mac.index];
+                    match arg.kind {
+                        ast::AstNodeKind::Argument(ref mut arg) if arg.exps.len() > mac.index => {
+                            let exp = &arg.exps[mac.index];
 
-                        match &exp.kind {
-                            ast::AstNodeKind::Literal(lit) => match &lit {
-                                ast::LiteralNode::Integer(i) => {
-                                    let mut found: Option<&VariableDefinition> = None;
-                                    for var in group.iter_resolved_variables() {
-                                        if let ron::Value::Number(ron::value::Number::Integer(j)) = var.value {
-                                            if *i == j as i32 {
+                            match &exp.kind {
+                                ast::AstNodeKind::Literal(lit) => match &lit {
+                                    ast::LiteralNode::Integer(i) => {
+                                        let mut found: Option<&VariableDefinition> = None;
+                                        for var in group.iter_resolved_variables() {
+                                            if let ron::Value::Number(ron::value::Number::Integer(j)) = var.value {
+                                                if *i == j as i32 {
+                                                    found = Some(var);
+                                                    break;
+                                                }
+                                            }
+                                        }
+
+                                        if let Some(var) = found {
+                                            if let Some(name) = var.r#macro.as_ref() {
+                                                node.ident.kind = PrimitiveTokenKind::GlobalVariable(name.clone());
+                                                arg.exps.remove(mac.index);
+                                                remove_arg = arg.exps.len() == 0;
+                                            }
+                                        }
+                                    }
+                                    _ => ()
+                                },
+                                ast::AstNodeKind::Variable(varexp) => {
+                                    if let PrimitiveTokenKind::GlobalVariable(varname) = &varexp.ident.kind {
+                                        let mut found: Option<&VariableDefinition> = None;
+                                        for var in group.iter_resolved_variables() {
+                                            if &var.name == varname {
                                                 found = Some(var);
                                                 break;
                                             }
                                         }
-                                    }
 
-                                    if let Some(var) = found {
-                                        if let Some(name) = var.r#macro.as_ref() {
-                                            node.ident.kind = PrimitiveTokenKind::GlobalVariable(name.clone());
-                                            arg.exps.remove(mac.index);
-                                            remove_arg = arg.exps.len() == 0;
+                                        if let Some(var) = found {
+                                            if let Some(name) = var.r#macro.as_ref() {
+                                                node.ident.kind = PrimitiveTokenKind::GlobalVariable(name.clone());
+                                                arg.exps.remove(mac.index);
+                                                remove_arg = arg.exps.len() == 0;
+                                            }
                                         }
                                     }
-                                }
+                                },
                                 _ => ()
-                            },
-                            ast::AstNodeKind::Variable(varexp) => {
-                                if let PrimitiveTokenKind::GlobalVariable(varname) = &varexp.ident.kind {
-                                    let mut found: Option<&VariableDefinition> = None;
-                                    for var in group.iter_resolved_variables() {
-                                        if &var.name == varname {
-                                            found = Some(var);
-                                            break;
-                                        }
-                                    }
-
-                                    if let Some(var) = found {
-                                        if let Some(name) = var.r#macro.as_ref() {
-                                            node.ident.kind = PrimitiveTokenKind::GlobalVariable(name.clone());
-                                            arg.exps.remove(mac.index);
-                                            remove_arg = arg.exps.len() == 0;
-                                        }
-                                    }
-                                }
-                            },
-                            _ => ()
+                            }
+                            // let variable_name = match node.ident.kind {
+                            //     PrimitiveTokenKind::GlobalVariable(ref name) => name.clone(),
+                            //     PrimitiveTokenKind::Parameter(ref param) => self.hsp3as.param_names.get(&param).asunwrap().to_string(),
+                            //     _ => unreachable!()
+                            // };
+                            // if let Some(array_def) = &self.config.arrays.get(&variable_name) {
+                            //     for index in array_def.indices.iter() {
+                            //         if self.array_index_matches(arg, &index.rules) {
+                            //             match &index.r#macro {
+                            //                 Some(m) => {
+                            //                     mac = Some(m.clone());
+                            //                     break;
+                            //                 },
+                            //                 None => self.substitute_array_indices(arg, &index.substitute)
+                            //             }
+                            //         }
+                            //     }
+                            // }
                         }
-                        // let variable_name = match node.ident.kind {
-                        //     PrimitiveTokenKind::GlobalVariable(ref name) => name.clone(),
-                        //     PrimitiveTokenKind::Parameter(ref param) => self.hsp3as.param_names.get(&param).asunwrap().to_string(),
-                        //     _ => unreachable!()
-                        // };
-                        // if let Some(array_def) = &self.config.arrays.get(&variable_name) {
-                        //     for index in array_def.indices.iter() {
-                        //         if self.array_index_matches(arg, &index.rules) {
-                        //             match &index.r#macro {
-                        //                 Some(m) => {
-                        //                     mac = Some(m.clone());
-                        //                     break;
-                        //                 },
-                        //                 None => self.substitute_array_indices(arg, &index.substitute)
-                        //             }
-                        //         }
-                        //     }
-                        // }
+                        _ => (),
                     }
                 }
             },
