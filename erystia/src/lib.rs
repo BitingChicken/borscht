@@ -1567,7 +1567,7 @@ impl<'a> VisitorMut for TxtUnrollVisitor<'a> {
         let mut exps = Vec::new();
         let mut state = TxtUnrollState::None;
 
-        for mut exp in block.nodes.into_iter() {
+        for exp in block.nodes.into_iter() {
             let (exp, new_state) = match state {
                 TxtUnrollState::FoundTxtc1(to, tc) => {
                     match exp.kind.as_assignment() {
@@ -2066,7 +2066,7 @@ fn merge_configs(config: &mut AnalysisConfig, parent: AnalysisConfig) -> Result<
     // Variables
     for (group_name, group) in parent.variable_groups.into_iter() {
         if config.variable_groups.contains_key(&group_name) {
-            let mut this_group = config.variable_groups.get_mut(&group_name).unwrap();
+            let this_group = config.variable_groups.get_mut(&group_name).unwrap();
             let mut vars = Vec::new();
             let mut seen = HashSet::new();
             for parent_variable in group.variables.into_iter() {
@@ -2247,7 +2247,7 @@ pub fn detect_db_file(start_ax_bytes: &[u8]) -> Result<String> {
     for entry in fs::read_dir("./database")? {
         let path = entry?.path();
         if path.is_file() && path.extension().map_or(false, |e| e == "ron") {
-            let mut file = File::open(&path)?;
+            let file = File::open(&path)?;
             let config: AnalysisConfig = ron::de::from_reader(file)?;
             if &config.meta.ax_sha256 == &sha256sum {
                 return Ok(path.into_os_string().into_string().unwrap());
@@ -2259,10 +2259,10 @@ pub fn detect_db_file(start_ax_bytes: &[u8]) -> Result<String> {
 }
 
 pub fn analyze<'a>(hsp3as: &'a mut Hsp3As, opts: &AnalysisOptions) -> Result<AnalysisResult> {
-    let mut config: AnalysisConfig = load_root_config(&opts.db_name)?;
+    let config: AnalysisConfig = load_root_config(&opts.db_name)?;
 
     let mut diagnostics = Diagnostics::new();
-    let mut labels = config.labels.clone();
+    let labels = config.labels.clone();
 
     let node = hsp3as.program.clone();
 
@@ -2384,7 +2384,7 @@ pub fn analyze<'a>(hsp3as: &'a mut Hsp3As, opts: &AnalysisOptions) -> Result<Ana
 }
 
 pub fn print_vars<'a>(db_name: &str) -> Result<()> {
-    let mut config: AnalysisConfig = load_root_config(&db_name)?;
+    let config: AnalysisConfig = load_root_config(&db_name)?;
 
     let mut names = config.variable_groups.keys().collect::<Vec<_>>();
     names.sort();

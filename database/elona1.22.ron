@@ -395,7 +395,7 @@ AnalysisConfig(
         ( name: "ITEM_ROLE_FILE_INCOME", value: 4 ),
         ( name: "ITEM_ROLE_FILE_SHOP_INCOME", value: 5 ),
         ( name: "ITEM_ROLE_FILE_FREEZER", value: 6 ),
-        ( name: "ITEM_ROLE_FILE_COOLER_BOX", value: 7 ),
+        ( name: "ITEM_ROLE_FILE_COOLER_BOX", value: 7 ),
         ( name: "ITEM_ROLE_FILE_POCKET", value: 8 ),
         // ( name: "ITEM_ROLE_FILE_DD_CEMETERY_KEY", value: 9 ),
         // ( name: "ITEM_ROLE_FILE_POTION_RACK", value: 10 ),

@@ -1,3 +1,6 @@
 * text=auto
-*.rs eol=lf text working-tree-encoding=utf-8
-*.ron eol=lf text working-tree-encoding=utf-8
+*.csv text eol=lf working-tree-encoding=CP932
+*.rs text eol=lf working-tree-encoding=utf-8
+*.ron text eol=lf working-tree-encoding=utf-8
+*.toml text eol=lf working-tree-encoding=utf-8
+*.sh text eol=lf working-tree-encoding=utf-8
