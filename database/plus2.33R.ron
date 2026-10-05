@@ -1,0 +1,112 @@
+#![enable(implicit_some)]
+
+AnalysisConfig(
+  meta: (
+    variant_name: "Elona+",
+    version: "2.33R",
+    ax_sha256: "0e46f342dd492dfb01063e4563babac9930607999a0098e8c675189979291d23"
+  ),
+
+  includes: [
+    "database/plus2.32.ron"
+  ],
+  
+  variable_groups: {
+
+    "chara_id": (
+      variables: [
+        ( name: "CREATURE_ID_HERAUDSTERON", value: 1151 ),
+        ( name: "CREATURE_ID_JAVA_SPOORROWRITER", value: 1152 ),
+        ( name: "CREATURE_ID_MOHAWK_PARROT", value: 1153 ),
+        ( name: "CREATURE_ID_MADUCK", value: 1154 ),
+        ( name: "CREATURE_ID_DANCING_SWAN", value: 1155 ),
+        ( name: "CREATURE_ID_CLASHING_WOODPECKER", value: 1156 ),
+        ( name: "CREATURE_ID_CARRIER_PIGEON", value: 1157 ),
+        ( name: "CREATURE_ID_MULTI_PEALOCK", value: 1158 ),
+        ( name: "CREATURE_ID_THOUSAND_CRANE", value: 1159 ),
+        ( name: "CREATURE_ID_ULTIMATE_PHOENIX", value: 1160 ),
+        ( name: "CREATURE_ID_SPIRIT_OF_PANTY", value: 1161 ),
+        ( name: "CREATURE_ID_SPIRIT_OF_PANJAN", value: 1162 ),
+
+        ( name: "MAX_CREATURE_ID", value: 1165, code_value: "CREATURE_ID_SPIRIT_OF_PANJAN + 3" ),
+      ]
+    ),
+
+    "item_id": (
+      variables: [
+        ( name: "ITEM_ID_LAZASYEEL", value: 1321 ),
+        ( name: "ITEM_ID_INQTUAFFLER", value: 1322 ),
+        ( name: "ITEM_ID_ROATONING", value: 1323 ),
+        ( name: "ITEM_ID_EGELMAIL", value: 1324 ),
+        ( name: "ITEM_ID_CHAIN_LETTER_OF_MISFORTUNE", value: 1325 ),
+        ( name: "ITEM_ID_SUSPICIOUS_LETTER", value: 1326 ),
+        ( name: "ITEM_ID_FAN_LETTER", value: 1327 ),
+        ( name: "ITEM_ID_BUSINESS_LETTER", value: 1328 ),
+        ( name: "ITEM_ID_WINNING_NOTIFICATION", value: 1329 ),
+        ( name: "ITEM_ID_LOVE_LETTER", value: 1330 ),
+        ( name: "ITEM_ID_INVITATION_LETTER", value: 1331 ),
+        ( name: "ITEM_ID_GLASSES", value: 1332 ),
+        ( name: "ITEM_ID_DEVIL_SHOOT", value: 1333 ),
+        ( name: "MAX_ITEM_ID", value: 1336, code_value: "ITEM_ID_DEVIL_SHOOT + 3", exclude: true ),
+      ],
+    ),
+
+
+    "gdata": (
+      variables: [
+        (
+          name: "GDATA_FLAG_SUB_SINAHA",
+          value: 698,
+          code_value: "STARTING_GDATA_FLAG + 448"
+        ),
+      ],
+    ),
+
+    "role": (
+      variables: [
+        ( name: "ROLE_GUEST_CARRIER", value: 2008 ),
+      ],
+    ),
+
+  },
+    
+  functions: {
+
+  },
+
+  labels: {
+
+    "*db_creature_SPIRIT_OF_PANTY": ( after: "*db_creature", loop_kind: SwitchEnd ),
+    "*db_creature_ULTIMATE_PHOENIX": ( after: "*db_creature_SPIRIT_OF_PANTY", loop_kind: SwitchEnd ),
+    "*db_creature_THOUSAND_CRANE": ( after: "*db_creature_ULTIMATE_PHOENIX", loop_kind: SwitchEnd ),
+    "*db_creature_MULTI_PEALOCK": ( after: "*db_creature_THOUSAND_CRANE", loop_kind: SwitchEnd ),
+    "*db_creature_CARRIER_PIGEON": ( after: "*db_creature_MULTI_PEALOCK", loop_kind: SwitchEnd ),
+    "*db_creature_CLASHING_WOODPECKER": ( after: "*db_creature_CARRIER_PIGEON", loop_kind: SwitchEnd ),
+    "*db_creature_DANCING_SWAN": ( after: "*db_creature_CLASHING_WOODPECKER", loop_kind: SwitchEnd ),
+    "*db_creature_MADUCK": ( after: "*db_creature_DANCING_SWAN", loop_kind: SwitchEnd ),
+    "*db_creature_MOHAWK_PARROT": ( after: "*db_creature_MADUCK", loop_kind: SwitchEnd ),
+    "*db_creature_JAVA_SPOORROWRITER": ( after: "*db_creature_MOHAWK_PARROT", loop_kind: SwitchEnd ),
+    "*db_creature_HERAUDSTERON": ( after: "*db_creature_JAVA_SPOORROWRITER", loop_kind: SwitchEnd ),
+    "*db_creature_TOWN_CHILD4": ( after: "*db_creature_HERAUDSTERON", loop_kind: SwitchEnd ),
+    // This override previous labels
+    "*db_creature_TOWN_CHILD3": ( after: "*db_creature_TOWN_CHILD4", loop_kind: SwitchEnd ),
+
+
+    "*db_item_GLASSES": ( after: "*db_item", loop_kind: SwitchEnd ),
+    "*db_item_INVITATION_LETTER": ( after: "*db_item_GLASSES", loop_kind: SwitchEnd ),
+    "*db_item_LOVE_LETTER": ( after: "*db_item_INVITATION_LETTER", loop_kind: SwitchEnd ),
+    "*db_item_WINNING_NOTIFICATION": ( after: "*db_item_LOVE_LETTER", loop_kind: SwitchEnd ),
+    "*db_item_BUSINESS_LETTER": ( after: "*db_item_WINNING_NOTIFICATION", loop_kind: SwitchEnd ),
+    "*db_item_FAN_LETTER": ( after: "*db_item_BUSINESS_LETTER", loop_kind: SwitchEnd ),
+    "*db_item_SUSPICIOUS_LETTER": ( after: "*db_item_FAN_LETTER", loop_kind: SwitchEnd ),
+    "*db_item_CHAIN_LETTER_OF_MISFORTUNE": ( after: "*db_item_SUSPICIOUS_LETTER", loop_kind: SwitchEnd ),
+    "*db_item_EGELMAIL": ( after: "*db_item_CHAIN_LETTER_OF_MISFORTUNE", loop_kind: SwitchEnd ),
+    "*db_item_ROATONING": ( after: "*db_item_EGELMAIL", loop_kind: SwitchEnd ),
+    "*db_item_INQTUAFFLER": ( after: "*db_item_ROATONING", loop_kind: SwitchEnd ),
+    "*db_item_LAZASYEEL": ( after: "*db_item_INQTUAFFLER", loop_kind: SwitchEnd ),
+    "*db_item_TZ500_K": ( after: "*db_item_LAZASYEEL", loop_kind: SwitchEnd ),
+    // This override previous labels
+    "*db_item_TZC_500": ( after: "*db_item_TZ500_K", loop_kind: SwitchEnd ),
+
+  },
+)
