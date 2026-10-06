@@ -62,12 +62,29 @@ AnalysisConfig(
       ],
     ),
 
+	"event": (
+      variables: [
+        ( name: "EVENT_CARRIER_PIGEON", value: 100 ),
+      ]
+    ),
+
     "role": (
       variables: [
         ( name: "ROLE_GUEST_CARRIER", value: 2008 ),
       ],
     ),
 
+	"item_effect": (
+      variables: [
+        ( name: "EFFECT_GLASSES", value: 155 ),
+      ]
+    ),
+
+    "filter_race": (
+      variables: [
+        ( name: "FILTER_RACE_SPIRIT_OF_PANTY", value: 55 ),
+      ]
+    ),
   },
     
   functions: {
